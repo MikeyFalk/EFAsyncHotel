@@ -25,6 +25,8 @@ namespace EFAsyncHotel
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+            services.AddControllers();
             services.AddDbContext<HotelDbContext>(options =>
            {
                string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -52,6 +54,8 @@ namespace EFAsyncHotel
              {
                 throw new InvalidOperationException("booyah");
             });
+
+                endpoints.MapControllers();
             });
         }
     }
