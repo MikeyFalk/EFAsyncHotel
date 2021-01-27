@@ -3,14 +3,16 @@ using EFAsyncHotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFAsyncHotel.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210127043106_addingRoomAmenity")]
+    partial class addingRoomAmenity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,7 +22,7 @@ namespace EFAsyncHotel.Migrations
 
             modelBuilder.Entity("EFAsyncHotel.Models.Amenity", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -29,26 +31,9 @@ namespace EFAsyncHotel.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Amenities");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Microwave"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Mini Bar"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "A / C"
-                        });
                 });
 
             modelBuilder.Entity("EFAsyncHotel.Models.Hotel", b =>
@@ -82,26 +67,12 @@ namespace EFAsyncHotel.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "123 42nd Ave",
-                            City = "San Francisco",
-                            Name = "Grand Pacific",
-                            State = "CA"
+                            Name = "Grand Pacific"
                         },
                         new
                         {
                             Id = 2,
-                            Address = "5678 Rockies Rd",
-                            City = "Denver",
-                            Name = "Mountain View",
-                            State = "CO"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "9283 Lakeview Ln",
-                            City = "Tahoe City",
-                            Name = "Lake Side",
-                            State = "CA"
+                            Name = "Mountain View"
                         });
                 });
 
@@ -122,26 +93,6 @@ namespace EFAsyncHotel.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Layout = 1,
-                            Name = "Snore Fest"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Layout = 2,
-                            Name = "Sir Snooze Alot"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Layout = 3,
-                            Name = "Shut Eye"
-                        });
                 });
 #pragma warning restore 612, 618
         }
