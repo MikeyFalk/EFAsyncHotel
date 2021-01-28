@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
+using EFAsyncHotel.Models.Interfaces;
 
 namespace EFAsyncHotel.Controllers
 {
@@ -14,97 +15,63 @@ namespace EFAsyncHotel.Controllers
     [ApiController]
     public class AmenitiesController : ControllerBase
     {
-        private readonly HotelDbContext _context;
+        private readonly IAmenity _amenity;
 
-        public AmenitiesController(HotelDbContext context)
+        public AmenitiesController(IAmenity amenity)
         {
-            _context = context;
+            _amenity = amenity;
         }
 
-        // GET: api/Hotels1
+        // GET: api/Amenities1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+        public async Task<ActionResult<IEnumerable<Amenity>>> GetAmenities()
         {
-            return await _context.Hotels.ToListAsync();
+            return Ok(await _amenity.GetAmenities());
         }
 
         // GET: api/Hotels1/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hotel>> GetHotel(int id)
+        public async Task<ActionResult<Amenity>> GetAmenity(int id)
         {
-            var hotel = await _context.Hotels.FindAsync(id);
+            Amenity amenity = await _amenity.GetAmenity(id);
 
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-
-            return hotel;
+            return amenity;
         }
 
         // PUT: api/Hotels1/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
+        public async Task<IActionResult> PutAmenity(int id, Amenity amenity)
         {
-            if (id != hotel.Id)
+            if (id != amenity.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(hotel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HotelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedAmenity = await _amenity.UpdateAmenity(id, amenity);
+           
+            return Ok(updatedAmenity);
         }
 
         // POST: api/Hotels1
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        public async Task<ActionResult<Amenity>> PostAmenity(Amenity amenity)
         {
-            _context.Hotels.Add(hotel);
-            await _context.SaveChangesAsync();
+            await _amenity.Create(amenity);
 
-            return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
+            return CreatedAtAction("GetHotel", new { id = amenity.Id }, amenity);
         }
 
         // DELETE: api/Hotels1/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Hotel>> DeleteHotel(int id)
+        public async Task<ActionResult<Amenity>> DeleteAmenity(int id)
         {
-            var hotel = await _context.Hotels.FindAsync(id);
-            if (hotel == null)
-            {
-                return NotFound();
-            }
+            await _amenity.DeleteAmenity(id);
 
-            _context.Hotels.Remove(hotel);
-            await _context.SaveChangesAsync();
-
-            return hotel;
-        }
-
-        private bool HotelExists(int id)
-        {
-            return _context.Hotels.Any(e => e.Id == id);
+            return NoContent();
         }
     }
 }

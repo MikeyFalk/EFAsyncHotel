@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
+using EFAsyncHotel.Models.Interfaces;
 
 namespace EFAsyncHotel.Controllers
 {
@@ -14,32 +15,28 @@ namespace EFAsyncHotel.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly HotelDbContext _context;
+        private readonly IRoom _room;
 
-        public RoomsController(HotelDbContext context)
+        public RoomsController(IRoom room)
         {
-            _context = context;
+            _room = room;
         }
 
         // GET: api/Rooms
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
-            return await _context.Rooms.ToListAsync();
+            return Ok(await _room.GetRooms());
         }
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-
-            if (room == null)
-            {
-                return NotFound();
-            }
+            Room room = await _room.GetRoom(id);
 
             return room;
+           
         }
 
         // PUT: api/Rooms/5
@@ -53,35 +50,17 @@ namespace EFAsyncHotel.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(room).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoomExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var updatedRoom = await _room.UpdateRoom(id, room);
+            return Ok(updatedRoom);
         }
-
         // POST: api/Rooms
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+           
+            await _room.Create(room);
 
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
@@ -90,21 +69,11 @@ namespace EFAsyncHotel.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
-            {
-                return NotFound();
-            }
+            await _room.DeleteRoom(id);
 
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-
-            return room;
+            return NoContent();
         }
 
-        private bool RoomExists(int id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
-        }
+       
     }
 }
