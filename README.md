@@ -3,9 +3,22 @@
 **Author**: Michael Falk
 **ERD Authors**: Matthew Petersen, David Dicken and Michael Falk
 
-**Version**: 2.0 - 1/22/2021
+**Version**: 3.0 - 1/27/2021
 
 ## Overview
+**version 3 update:** 
+refactored code to include interfaces and services to handle database CRUD operations through table specific repositories. 
+
+Before
+
+Controller <==> DataBase
+
+After
+
+Controller <==> Repository <==> Database.
+
+
+**Version 2 update:** 
 Built tables into an entity framework database from our ERD.
 
 Tables built:
