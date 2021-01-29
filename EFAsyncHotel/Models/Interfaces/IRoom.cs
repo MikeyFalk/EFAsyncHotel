@@ -13,5 +13,9 @@ namespace EFAsyncHotel.Models.Interfaces
         Task<Room> UpdateRoom(int Id, Room room);
 
         Task DeleteRoom(int Id);
+
+        Task AddAmenityToRoom(int roomId, int amenityId);
+
+        Task RemoveAmenityFromRoom(int roomId, int amenityId);
     }
 }

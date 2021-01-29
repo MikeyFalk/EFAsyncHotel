@@ -15,5 +15,8 @@ namespace EFAsyncHotel.Models
         public string Name { get; set; }
 
         public int Layout { get; set; }
+
+       public List<RoomAmenity> RoomAmenities { get; set; }
+
     }
 }

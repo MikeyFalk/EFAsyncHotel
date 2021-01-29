@@ -18,5 +18,7 @@ namespace EFAsyncHotel.Models
         public string Address { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public List<HotelRoom> HotelRooms { get; set; }
     }
 }

@@ -74,6 +74,26 @@ namespace EFAsyncHotel.Controllers
             return NoContent();
         }
 
+        //POST: api/Rooms/5/7
+        [HttpPost]
+        [Route("{roomId}/Amenity/{amenityId}")]
+        public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
+        {
+            await _room.AddAmenityToRoom(roomId, amenityId);
+            return NoContent();
+
+        }
+
+
+        //DELETE: api/Rooms/5/7
+        [HttpDelete]
+        [Route("{roomId}/Amenity{amenityId}")]
+        public async Task<IActionResult> DeleteAmenityFromRoom(int roomId, int amenityId)
+        {
+            await _room.RemoveAmenityFromRoom(roomId, amenityId);
+            return NoContent();
+        }
+
        
     }
 }
