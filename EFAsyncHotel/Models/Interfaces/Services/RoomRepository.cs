@@ -33,14 +33,19 @@ namespace EFAsyncHotel.Models.Interfaces.Services
 
         public async Task<Room> GetRoom(int Id)
         {
-            Room room = await _context.Rooms.FindAsync(Id);
-            return room;
+            return await _context.Rooms
+                .Include(r => r.RoomAmenities)
+                 .ThenInclude(a => a.Amenity)
+                  .FirstOrDefaultAsync(r => r.Id == Id);
+        
         }
 
         public async Task<List<Room>> GetRooms()
         {
-            var rooms = await _context.Rooms.ToListAsync();
-            return rooms;
+            return await _context.Rooms
+                .Include(r => r.RoomAmenities)
+                 .ThenInclude(a => a.Amenity)
+                   .ToListAsync();           
                 
         }
 
@@ -50,6 +55,26 @@ namespace EFAsyncHotel.Models.Interfaces.Services
             await _context.SaveChangesAsync();
 
             return room;
+        }
+
+        public async Task AddAmenityToRoom(int roomId, int amenityId)
+        {
+            RoomAmenity roomAmenity = new RoomAmenity()
+            {
+                RoomId = roomId,
+                AmenityId = amenityId
+            };
+
+            _context.Entry(roomAmenity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+
+
+
+        }
+
+        public Task RemoveAmenityFromRoom(int roomId, int amenityId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
