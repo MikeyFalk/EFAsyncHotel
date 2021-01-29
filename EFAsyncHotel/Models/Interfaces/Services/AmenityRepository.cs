@@ -33,9 +33,9 @@ namespace EFAsyncHotel.Models.Interfaces.Services
             return amenities;
         }
 
-        public async Task<Amenity> GetAmenity(int id)
+        public async Task<Amenity> GetAmenity(int Id)
         {
-            Amenity amenity = await _context.Amenities.FindAsync();
+            Amenity amenity = await _context.Amenities.FindAsync(Id);
             return amenity;
         }
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EFAsyncHotel.Models.Interfaces
 {
-    interface IRoom
+    public interface IRoom
     {
         Task<Room> Create(Room room);
         Task<Room> GetRoom(int Id);
