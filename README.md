@@ -3,9 +3,16 @@
 **Author**: Michael Falk
 **ERD Authors**: Matthew Petersen, David Dicken and Michael Falk
 
-**Version**: 3.0 - 1/27/2021
+**Version**: 5.0 - 2/1/2021
 
 ## Overview
+
+**version 5 update**
+started work on DTOs to be able to customize data sent to clients
+
+**version 4 update**
+added additional join tables RoomAmmenities and HotelRooms.
+
 **version 3 update:** 
 refactored code to include interfaces and services to handle database CRUD operations through table specific repositories. 
 
