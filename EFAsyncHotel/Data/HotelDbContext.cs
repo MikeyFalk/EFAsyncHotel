@@ -15,6 +15,16 @@ namespace EFAsyncHotel.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<RoomAmenity>().HasKey(
+
+                roomAmenity => new { roomAmenity.RoomId, roomAmenity.AmenityId }
+                );
+            modelBuilder.Entity<HotelRoom>().HasKey(
+
+                hotelRoom => new { hotelRoom.HotelId, hotelRoom.RoomID }
+                );
+
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel { Id = 1, Name = "Grand Pacific", City = "San Francisco", State = "CA", Address = "123 42nd Ave" },
                 new Hotel { Id = 2, Name = "Mountain View", City = "Denver", State = "CO", Address = "5678 Rockies Rd" },
@@ -34,14 +44,7 @@ namespace EFAsyncHotel.Data
                 new Amenity { Id = 3, Name = "A / C" }
 
                 );
-            modelBuilder.Entity<RoomAmenity>().HasKey(
-
-                roomAmenity => new { roomAmenity.RoomId, roomAmenity.AmenityId }
-                );
-            modelBuilder.Entity<HotelRoom>().HasKey(
-
-                hotelRoom => new { hotelRoom.HotelID, hotelRoom.RoomID }
-                );
+            
              
              
         }

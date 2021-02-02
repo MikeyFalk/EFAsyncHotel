@@ -44,7 +44,7 @@ namespace EFAsyncHotel
             services.AddTransient<IRoom, RoomRepository>();
             services.AddTransient<IAmenity, AmenityRepository>();
             services.AddTransient<IHotel, HotelRepository>();
-            //services.AddTransient<IHotelRoom, HotelRoom>();
+            services.AddTransient<IHotelRoom, HotelRoomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
