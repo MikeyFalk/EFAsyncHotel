@@ -1,4 +1,5 @@
 ﻿using EFAsyncHotel.Data;
+using EFAsyncHotel.Models.Api;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,8 +36,14 @@ namespace EFAsyncHotel.Models.Interfaces.Services
 
         public async Task<Amenity> GetAmenity(int Id)
         {
-            Amenity amenity = await _context.Amenities.FindAsync(Id);
-            return amenity;
+            return await _context.Amenities
+                .Select(amenity => new AmenitiesDTO
+                {   Id = amenity.Id,
+                    Name = amenity.Name
+
+                }).FirstOrDefaultAsync(n => n.Id == id);
+                
+            
         }
 
         public async Task<Amenity> UpdateAmenity(int id, Amenity amenity)

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
 using EFAsyncHotel.Models.Interfaces;
+using EFAsyncHotel.Models.Api;
 
 namespace EFAsyncHotel.Controllers
 {
@@ -31,9 +32,9 @@ namespace EFAsyncHotel.Controllers
 
         // GET: api/Hotels1/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Amenity>> GetAmenity(int id)
+        public async Task<ActionResult<AmenitiesDTO>> GetAmenity(int id)
         {
-            Amenity amenity = await _amenity.GetAmenity(id);
+            AmenitiesDTO amenity = await _amenity.GetAmenity(id);
 
             return amenity;
         }
