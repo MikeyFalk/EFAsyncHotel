@@ -9,11 +9,11 @@ namespace EFAsyncHotel.Models.Interfaces
 
     {
         Task <HotelRoom> Create(HotelRoom hotelRoom);
-        Task <HotelRoom> GetHotel(int Id);
-        Task <HotelRoom> GetHotelRooms();
+        Task <HotelRoom> GetHotelRoom(int hotelId, int roomId);
+        Task<List <HotelRoom>> GetHotelRooms();
 
-        Task <HotelRoom> UpdateHotelRoom(int Id, HotelRoom hotelRoom);
-        Task DeleteHotelRoom(int Id);
+        Task <HotelRoom> UpdateHotelRoom(int hotelId, int roomId, HotelRoom hotelRoom);
+        Task DeleteHotelRoom(int hotelId, int roomId);
 
 
 

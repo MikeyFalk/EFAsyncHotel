@@ -16,7 +16,13 @@ namespace EFAsyncHotel.Models
 
         public int Layout { get; set; }
 
+        /// <summary>
+        /// These are the navigation properties
+        /// </summary>
+
        public List<RoomAmenity> RoomAmenities { get; set; }
+
+        public List<HotelRoom> HotelRooms { get; set; }
 
     }
 }

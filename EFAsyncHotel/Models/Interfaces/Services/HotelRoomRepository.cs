@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EFAsyncHotel.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,29 +9,55 @@ namespace EFAsyncHotel.Models.Interfaces.Services
 {
     public class HotelRoomRepository : IHotelRoom
     {
-        public Task<HotelRoom> Create(HotelRoom hotelRoom)
+        private HotelDbContext _context;
+
+        public HotelRoomRepository(HotelDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteHotelRoom(int Id)
+        public async Task<HotelRoom> Create(HotelRoom hotelRoom)
         {
-            throw new NotImplementedException();
+            _context.Entry(hotelRoom).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            await _context.SaveChangesAsync();
+
+            return hotelRoom;
         }
 
-        public Task<HotelRoom> GetHotel(int Id)
+        public async Task DeleteHotelRoom(int hotelId, int roomId)
         {
-            throw new NotImplementedException();
+            HotelRoom hotelRoom = await GetHotelRoom(hotelId, roomId);
+            _context.Entry(hotelRoom).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
-        public Task<HotelRoom> GetHotelRooms()
+        public async Task<HotelRoom> GetHotelRoom(int hotelId, int roomId)
         {
-            throw new NotImplementedException();
+             var hotelRoom = await _context.HotelRooms.Where(x => x.HotelId == hotelId && x.RoomNumber == roomId).FirstOrDefaultAsync();
+            
+            return hotelRoom;
         }
 
-        public Task<HotelRoom> UpdateHotelRoom(int Id, HotelRoom hotelRoom)
+        
+        public async Task<List<HotelRoom>>GetHotelRooms() 
         {
-            throw new NotImplementedException();
+            var hotelRooms = await _context.HotelRooms.ToListAsync();
+            return hotelRooms;
         }
+
+        public async Task<HotelRoom> UpdateHotelRoom(int hotelId, int roomId, HotelRoom hotelRoom)
+        {
+            _context.Entry(hotelRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return hotelRoom;
+        }
+
+        
+
+        
+
+        
+       
     }
 }

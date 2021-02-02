@@ -10,10 +10,11 @@ namespace EFAsyncHotel.Models
         public int RoomId { get; set; }
         public int AmenityId { get; set; }
 
+        /// <summary>
+        /// These are navigation keys
+        /// </summary>
         public Room Room { get; set; }
         public Amenity Amenity { get; set; }
 
-        public List<Amenity> Amenities { get; set; }
-        public List<Room> Rooms { get; set; }
     }
 }

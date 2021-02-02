@@ -72,9 +72,13 @@ namespace EFAsyncHotel.Models.Interfaces.Services
 
         }
 
-        public Task RemoveAmenityFromRoom(int roomId, int amenityId)
+        public async Task RemoveAmenityFromRoom(int roomId, int amenityId)
         {
-            throw new NotImplementedException();
+            var result = await _context.RoomAmenities.FirstOrDefaultAsync(x => x.RoomId == roomId && x.AmenityId == amenityId);
+
+            _context.Entry(result).State = EntityState.Deleted;
+
+            await _context.SaveChangesAsync();
         }
     }
 }
