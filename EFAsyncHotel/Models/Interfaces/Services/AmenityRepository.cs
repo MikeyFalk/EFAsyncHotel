@@ -34,14 +34,14 @@ namespace EFAsyncHotel.Models.Interfaces.Services
             return amenities;
         }
 
-        public async Task<Amenity> GetAmenity(int Id)
+        public async Task<AmenityDTO> GetAmenity(int Id)
         {
             return await _context.Amenities
-                .Select(amenity => new AmenitiesDTO
+                .Select(amenity => new AmenityDTO
                 {   Id = amenity.Id,
                     Name = amenity.Name
 
-                }).FirstOrDefaultAsync(n => n.Id == id);
+                }).FirstOrDefaultAsync(a => a.Id == Id);
                 
             
         }
@@ -56,9 +56,14 @@ namespace EFAsyncHotel.Models.Interfaces.Services
 
         public async Task DeleteAmenity(int id)
         {
-            Amenity amenity = await GetAmenity(id);
-            _context.Entry(amenity).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            //Amenity amenity = await GetAmenity(id);
+            //_context.Entry(amenity).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            //await _context.SaveChangesAsync();
+        }
+
+        Task<AmenityDTO> IAmenity.GetAmenity(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

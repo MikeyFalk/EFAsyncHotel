@@ -74,7 +74,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // DELETE: api/HotelRooms/5
-        [HttpDelete("{hotel/Id}/Rooms/{roomNumber")]
+        [HttpDelete("{hotelId}/Rooms/{roomNumber}")]
         public async Task<ActionResult<HotelRoom>> DeleteHotelRoom(int hotelId, int roomId)
         {
             await _hotelRoom.DeleteHotelRoom(hotelId, roomId);

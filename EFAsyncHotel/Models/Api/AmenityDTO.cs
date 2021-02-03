@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace EFAsyncHotel.Models.Api
 {
-    public class RoomsDTO
+    public class AmenityDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
-        public string Layout { get; set; }
     }
 }

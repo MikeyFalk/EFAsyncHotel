@@ -32,9 +32,9 @@ namespace EFAsyncHotel.Controllers
 
         // GET: api/Hotels1/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AmenitiesDTO>> GetAmenity(int id)
+        public async Task<ActionResult<AmenityDTO>> GetAmenity(int id)
         {
-            AmenitiesDTO amenity = await _amenity.GetAmenity(id);
+            AmenityDTO amenity = await _amenity.GetAmenity(id);
 
             return amenity;
         }

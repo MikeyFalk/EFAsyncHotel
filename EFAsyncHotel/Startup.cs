@@ -46,6 +46,7 @@ namespace EFAsyncHotel
             services.AddTransient<IAmenity, AmenityRepository>();
             services.AddTransient<IHotel, HotelRepository>();
             services.AddTransient<IHotelRoom, HotelRoomRepository>();
+            
             //registers swagger service
             services.AddSwaggerGen(options =>
             {
@@ -68,7 +69,7 @@ namespace EFAsyncHotel
             app.UseRouting();
             app.UseSwagger(options =>
             {
-                options.RouteTemplate = "/api{documentName}/swagger.jason";
+                options.RouteTemplate = "/api/{documentName}/swagger.json";
             });
             app.UseSwaggerUI(options =>
             {
@@ -78,16 +79,7 @@ namespace EFAsyncHotel
 
             app.UseEndpoints(endpoints =>
             {
-            endpoints.MapGet("/", async context =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });
-            endpoints.MapGet("/hey", async context =>
-             {
-                throw new InvalidOperationException("booyah");
-            });
-
-                endpoints.MapControllers();
+               endpoints.MapControllers();
             });
         }
     }

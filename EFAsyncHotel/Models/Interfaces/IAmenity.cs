@@ -12,7 +12,7 @@ namespace EFAsyncHotel.Models.Interfaces
        
         Task<List<Amenity>> GetAmenities();
 
-        Task<AmenitiesDTO> GetAmenity(int id);
+        Task<AmenityDTO> GetAmenity(int id);
 
         Task<Amenity> UpdateAmenity(int id, Amenity amenity);
 
