@@ -3,9 +3,12 @@
 **Author**: Michael Falk
 **ERD Authors**: Matthew Petersen, David Dicken and Michael Falk
 
-**Version**: 5.0 - 2/1/2021
+**Version**: 6.0 - 2/2/2021
 
 ## Overview
+
+**version 6 update**
+Added mock db for testing, registered Swagger for improved route documentation, and deployed to azure.
 
 **version 5 update**
 started work on DTOs to be able to customize data sent to clients
