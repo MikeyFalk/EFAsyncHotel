@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,15 @@ namespace EFAsyncHotel
             services.AddTransient<IAmenity, AmenityRepository>();
             services.AddTransient<IHotel, HotelRepository>();
             services.AddTransient<IHotelRoom, HotelRoomRepository>();
+            //registers swagger service
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Title = "Async Inn",
+                    Version = "v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +66,15 @@ namespace EFAsyncHotel
             }
 
             app.UseRouting();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "/api{documentName}/swagger.jason";
+            });
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/v1/swagger.json", "Mike's Hotel Lab");
+                options.RoutePrefix = "";
+            });
 
             app.UseEndpoints(endpoints =>
             {
