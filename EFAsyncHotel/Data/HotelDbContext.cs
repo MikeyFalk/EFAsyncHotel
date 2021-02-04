@@ -1,4 +1,5 @@
 ﻿using EFAsyncHotel.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace EFAsyncHotel.Data
 {
-    public class HotelDbContext : DbContext
+    public class HotelDbContext : IdentityDbContext<ApplicationUser>
+
     {
         public HotelDbContext(DbContextOptions options) : base(options)
         {
@@ -15,6 +17,7 @@ namespace EFAsyncHotel.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<RoomAmenity>().HasKey(
 
@@ -56,6 +59,8 @@ namespace EFAsyncHotel.Data
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<RoomAmenity> RoomAmenities { get; set; }
         public DbSet<HotelRoom> HotelRooms { get; set; }
+
+        
 
 
     }
