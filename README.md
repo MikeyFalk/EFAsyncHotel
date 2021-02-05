@@ -3,9 +3,15 @@
 **Author**: Michael Falk
 **ERD Authors**: Matthew Petersen, David Dicken and Michael Falk
 
-**Version**: 6.0 - 2/2/2021
+**Version**: 8.0 - 2/4/2021
 
 ## Overview
+
+**version 8 update**
+Added Authorization features with JWT tokens, roles, and permissions
+
+**version 7 update**
+Added Authentication features for login and password
 
 **version 6 update**
 Added mock db for testing, registered Swagger for improved route documentation, and deployed to azure.
