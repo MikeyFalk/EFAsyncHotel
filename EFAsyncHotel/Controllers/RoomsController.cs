@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
 using EFAsyncHotel.Models.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFAsyncHotel.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomsController : ControllerBase
@@ -23,6 +25,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // GET: api/Rooms
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
@@ -30,6 +33,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // GET: api/Rooms/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
@@ -42,6 +46,8 @@ namespace EFAsyncHotel.Controllers
         // PUT: api/Rooms/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+        [Authorize(Roles = "District Manager")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoom(int id, Room room)
         {
@@ -56,6 +62,7 @@ namespace EFAsyncHotel.Controllers
         // POST: api/Rooms
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "District Manager")]
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
@@ -66,6 +73,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // DELETE: api/Rooms/5
+        [Authorize(Roles = "District Manager")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(int id)
         {
@@ -75,6 +83,8 @@ namespace EFAsyncHotel.Controllers
         }
 
         //POST: api/Rooms/5/7
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "Property Manager")]
         [HttpPost]
         [Route("{roomId}/Amenity/{amenityId}")]
         public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
@@ -86,6 +96,7 @@ namespace EFAsyncHotel.Controllers
 
 
         //DELETE: api/Rooms/5/7
+        [Authorize(Roles = "District Manager")]
         [HttpDelete]
         [Route("{roomId}/Amenity{amenityId}")]
         public async Task<IActionResult> DeleteAmenityFromRoom(int roomId, int amenityId)

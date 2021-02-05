@@ -1,4 +1,6 @@
 ﻿using EFAsyncHotel.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace EFAsyncHotel.Data
 {
-    public class HotelDbContext : DbContext
+    public class HotelDbContext : IdentityDbContext<ApplicationUser>
+
     {
         public HotelDbContext(DbContextOptions options) : base(options)
         {
@@ -15,6 +18,7 @@ namespace EFAsyncHotel.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<RoomAmenity>().HasKey(
 
@@ -44,6 +48,10 @@ namespace EFAsyncHotel.Data
                 new Amenity { Id = 3, Name = "A / C" }
 
                 );
+            SeedRole(modelBuilder, "District Manager", "create","update","delete");
+            SeedRole(modelBuilder, "Property Manager", "create", "update");
+            SeedRole(modelBuilder, "Agent", "create");
+            SeedRole(modelBuilder, "Guest User");
             
              
              
@@ -56,6 +64,34 @@ namespace EFAsyncHotel.Data
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<RoomAmenity> RoomAmenities { get; set; }
         public DbSet<HotelRoom> HotelRooms { get; set; }
+
+
+        private int nextId = 1;
+        private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        {
+            var role = new IdentityRole
+                {
+                    Id = roleName.ToLower(),
+                    Name = roleName,
+                    NormalizedName = roleName.ToUpper(),
+                    ConcurrencyStamp = Guid.Empty.ToString()
+                };
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            //this seeds the permissions for each group
+            var roleClaims = permissions.Select(permission =>
+            new IdentityRoleClaim<string>
+            {
+                Id = nextId++,
+                RoleId = role.Id,
+                ClaimType = "permissions", //This could be potato but needs to match whats in startup.cs
+                ClaimValue = permission
+            }).ToArray();
+
+            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
+            
+        }
+        
 
 
     }

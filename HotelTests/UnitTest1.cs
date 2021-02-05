@@ -43,15 +43,15 @@ namespace HotelTests
             var repository = new AmenityRepository(_db);
 
             //Act
-            await repository.Create(amenity);
+            await repository.Create(amentiy);
 
             //Assert
-            var actualAmenity = await repository.GetAmenity(amenity.Id);
+            var actualAmenity = await repository.GetAmenity(amentiy.Id);
 
             Assert.NotNull(actualAmenity);
 
             await repository.DeleteAmenity(amentiy.Id);
-            actualAmenity = await repository.GetAmenity(Amenity.Id);
+            actualAmenity = await repository.GetAmenity(amentiy.Id);
             Assert.Null(actualAmenity);
             
 
