@@ -1,9 +1,11 @@
 ﻿using EFAsyncHotel.Models.Api;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EFAsyncHotel.Models.Interfaces.Services
@@ -11,9 +13,12 @@ namespace EFAsyncHotel.Models.Interfaces.Services
     public class IdentityUserService : IUserService
     {
         private UserManager<ApplicationUser> userManager;
-        public IdentityUserService(UserManager<ApplicationUser> manager)
+
+        private JwtTokenService tokenService;
+        public IdentityUserService(UserManager<ApplicationUser> manager, JwtTokenService jwtTokenService)
         {
             userManager = manager;
+            tokenService = jwtTokenService;
         }
 
        public async Task<UserDTO> Register(RegisterUser data, ModelStateDictionary modelState)
@@ -28,11 +33,15 @@ namespace EFAsyncHotel.Models.Interfaces.Services
             var result = await userManager.CreateAsync(user, data.Password);
 
             if(result.Succeeded)
+
             {
+                await userManager.AddToRolesAsync(user, data.Roles);
+
                 return new UserDTO
                 {
                     Id = user.Id,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Token =await tokenService.GetToken(user, System.TimeSpan.FromMinutes(5))
                 };
             }
 
@@ -52,6 +61,20 @@ namespace EFAsyncHotel.Models.Interfaces.Services
             return null;
         }
 
+        //This will help turn "Claims" into a user
+        public async Task<UserDTO> GetUser(ClaimsPrincipal principal)
+        {
+            var user = await userManager.GetUserAsync(principal);            
+            return new UserDTO
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(15))
+            };
+        }
+
+
+
         public async Task<UserDTO> Authenticate(string username, string password)
         {
             var user = await userManager.FindByNameAsync(username);
@@ -61,10 +84,14 @@ namespace EFAsyncHotel.Models.Interfaces.Services
                 return new UserDTO
                 {
                     Id = user.Id,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(5))
                 };
             }
             return null;
         }
+
+   
+        
     }
 }

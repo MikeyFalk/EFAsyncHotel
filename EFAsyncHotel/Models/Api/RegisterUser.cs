@@ -18,5 +18,8 @@ namespace EFAsyncHotel.Models.Api
         public string Email { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        //You don't normally do this part users shouldn't be able to pick their own role.
+        public List<string> Roles { get; set; }
     }
 }

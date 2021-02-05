@@ -2,6 +2,7 @@ using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
 using EFAsyncHotel.Models.Interfaces;
 using EFAsyncHotel.Models.Interfaces.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,30 @@ namespace EFAsyncHotel
             {
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<HotelDbContext>();   
+            .AddEntityFrameworkStores<HotelDbContext>();
+
+            //This registers the Jwt token service which allows us to pass tokens for users after they sign in.
+            services.AddScoped<JwtTokenService>();
+
+            //This wires the Authentication for the API it tells the system to always use these schemes to authenticate us
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            })
+                .AddJwtBearer(options =>
+             {// this tells the authentication scheme how and where to validate the token and secret
+                 options.TokenValidationParameters = JwtTokenService.GetValidationParameters(Configuration);
+             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
+                options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
+                options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
+            });
 
 
             //Registers Dependency Injection services
@@ -83,6 +107,12 @@ namespace EFAsyncHotel
             }
 
             app.UseRouting();
+
+
+            //Tells the app to use Authentication and Authorization
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseSwagger(options =>
             {
                 options.RouteTemplate = "/api/{documentName}/swagger.json";

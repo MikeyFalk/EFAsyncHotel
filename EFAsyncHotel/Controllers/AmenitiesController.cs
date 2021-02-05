@@ -9,9 +9,10 @@ using EFAsyncHotel.Data;
 using EFAsyncHotel.Models;
 using EFAsyncHotel.Models.Interfaces;
 using EFAsyncHotel.Models.Api;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFAsyncHotel.Controllers
-{
+{   [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AmenitiesController : ControllerBase
@@ -24,6 +25,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // GET: api/Amenities1
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Amenity>>> GetAmenities()
         {
@@ -31,6 +33,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // GET: api/Hotels1/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<AmenityDTO>> GetAmenity(int id)
         {
@@ -42,6 +45,7 @@ namespace EFAsyncHotel.Controllers
         // PUT: api/Hotels1/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "District Manager")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAmenity(int id, Amenity amenity)
         {
@@ -58,6 +62,7 @@ namespace EFAsyncHotel.Controllers
         // POST: api/Hotels1
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "District Manager")]
         [HttpPost]
         public async Task<ActionResult<Amenity>> PostAmenity(Amenity amenity)
         {
@@ -67,6 +72,7 @@ namespace EFAsyncHotel.Controllers
         }
 
         // DELETE: api/Hotels1/5
+        [Authorize(Roles = "District Manager")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Amenity>> DeleteAmenity(int id)
         {
